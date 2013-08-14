@@ -10,6 +10,7 @@ width: 400
 
 > {-# LANGUAGE NoMonomorphismRestriction, TupleSections #-}
 > import Diagrams.Prelude
+> import Diagrams.Backend.SVG
 
 To create one quarter of the diagram, we first create some "axes"
 which are just lines with evenly spaced named points along them which
@@ -38,3 +39,4 @@ The final diagram is created by assembling four copies of the above.
 >   where half = (rotateBy (1/4) (pic n) ||| pic n) # centerX
 >         
 > example = pad 1.1 $ d 20 # lc blue
+> main = return example

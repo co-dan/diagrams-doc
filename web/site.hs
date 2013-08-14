@@ -41,27 +41,27 @@ main = hakyll $ do
         route   idRoute
         compile copyFileCompiler
 
-    -- User manual --------------------------------
-    match "doc/*.html" $ do
-        route idRoute
-        let docCtx = field "title" $ \i -> do
-              let baseName = takeBaseName . toFilePath . itemIdentifier $ i
-              return $ case baseName of
-                "manual"     -> "User manual"
-                "quickstart" -> "Quick start tutorial"
-                "tutorials"  -> "How to write tutorials"
-                _            -> baseName
-        compile (getResourceBody >>= mainCompiler (docCtx <> defaultContext))
+    -- -- User manual --------------------------------
+    -- match "doc/*.html" $ do
+    --     route idRoute
+    --     let docCtx = field "title" $ \i -> do
+    --           let baseName = takeBaseName . toFilePath . itemIdentifier $ i
+    --           return $ case baseName of
+    --             "manual"     -> "User manual"
+    --             "quickstart" -> "Quick start tutorial"
+    --             "tutorials"  -> "How to write tutorials"
+    --             _            -> baseName
+    --     compile (getResourceBody >>= mainCompiler (docCtx <> defaultContext))
 
-    match ("doc/**" .&&. complement "doc/*.html") $ do
-        route idRoute
-        compile copyFileCompiler
+    -- match ("doc/**" .&&. complement "doc/*.html") $ do
+    --     route idRoute
+    --     compile copyFileCompiler
 
-    -- API documentation --------------------------
+    -- -- API documentation --------------------------
 
-    match "haddock/**" $ do
-        route idRoute
-        compile copyFileCompiler
+    -- match "haddock/**" $ do
+    --     route idRoute
+    --     compile copyFileCompiler
 
     -- Static images ------------------------------
 
@@ -80,7 +80,7 @@ main = hakyll $ do
 
     -- Example gallery ----------------------------
 
-    match "gallery/images/*.png" $ do
+    match "gallery/images/*.svg" $ do
         route idRoute
         compile copyFileCompiler
 
@@ -96,10 +96,12 @@ main = hakyll $ do
       -- build syntax-highlighted source code for examples
     match "gallery/*.lhs" $ version "gallery" $ do
         route $ setExtension "html"
-        compile $ withMathJax
+        compile $ do
+            withMathJax
             >>= loadAndApplyTemplate "templates/exampleHi.html"
                   ( mconcat
-                    [ setImgURL
+                    [ field "code" readSource
+                    , setImgURL
                     , setHtmlURL
                     , markdownFieldsCtx ["description"]
                     , defaultContext
@@ -112,8 +114,16 @@ main = hakyll $ do
         route idRoute
         compile getResourceBody
 
+
+readSource :: Item String -> Compiler String
+readSource item = itemBody <$> getResourceBody
+  where
+    metadata = itemIdentifier item
+
+        
+
 withMathJax :: Compiler (Item String)
-withMathJax =
+withMathJax = do
   pandocCompilerWithTransform
     defaultHakyllReaderOptions
     defaultHakyllWriterOptions
@@ -129,8 +139,8 @@ mainCompiler ctx = loadAndApplyTemplate "templates/default.html" ctx
                >=> relativizeUrls
 
 setThumbURL, setImgURL, setHtmlURL :: Context String
-setThumbURL  = setURL "images" "thumb.png"
-setImgURL    = setURL "images" "big.png"
+setThumbURL  = setURL "images" ".svg"
+setImgURL    = setURL "images" ".svg"
 setHtmlURL   = setURL "" "html"
 
 setURL :: FilePath -> String -> Context String

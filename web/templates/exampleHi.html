@@ -3,12 +3,28 @@
 $description$
 
 <div class="exampleimg" style="text-align: center">
-<img src="$bigpngurl$" />
+<img src="$svgurl$" />
 </div>
 Author: <b><a href="$authorurl$">$author$</a></b>
 
-<p><span style="font-size: small"><a href="/$path$">Download raw source code</a></span><br /></p>
+<p><span style="font-size: small"><a href="/$path$">Download raw
+      source code</a></span><br /></p>
+<p><span style="font-size: small">
+    <a href="#"
+       onclick="document.getElementById('pasteform').submit();">
+      Paste it!
+    </a></span</p>
 
 $body$
 
+<form action="http://localhost:3030/new" method="POST" id="pasteform">
+  <input type="hidden" name="author" value="$author$" />
+  <input type="hidden" name="title" value="Example" />
+  <input type="hidden" name="literate" value="True" />
+  <textarea style="display: none;" name="code">
+$code$</textarea>
+  <input type="submit" />
+</form>
+
 </div>
+

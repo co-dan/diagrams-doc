@@ -11,10 +11,10 @@ view: -10,1.5,20,20
 
 > {-# LANGUAGE NoMonomorphismRestriction #-}
 > import Diagrams.Prelude
-> import Diagrams.Backend.Cairo
+> import Diagrams.Backend.SVG
 > import Data.List
 >
-> type DC = Diagram Cairo R2
+> type DC = Diagram SVG R2
 
 First, some colors for our disks, and types to represent the data
 structures involved.

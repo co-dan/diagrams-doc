@@ -15,6 +15,7 @@ which explains the algorithm for constructing the tree.
 
 > {-# LANGUAGE NoMonomorphismRestriction #-}
 > import Diagrams.Prelude
+> import Diagrams.Backend.SVG
 > import Diagrams.TwoD
 > import Data.Colour (blend)
 
@@ -40,3 +41,5 @@ For aesthetics, let the leaves have circles instead of squares.
 Draw the order 10 tree.
 
 > example = tree 10
+> 
+> main = return example
